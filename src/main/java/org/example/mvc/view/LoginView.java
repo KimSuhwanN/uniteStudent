@@ -100,15 +100,21 @@ public class LoginView {
 
                 while (true) {
                     System.out.println("\n=== 메인 메뉴 ===");
-                    System.out.println("1. 선발 일정 및 비용 확인");
-                    System.out.println("2. 입사 신청");
-                    System.out.println("3. 합격 여부 및 호실 확인");
-                    System.out.println("4. 생활관 비용 확인 및 납부");
-                    System.out.println("5. 결핵진단서 제출");
-                    System.out.println("6. 퇴사 신청");
-                    System.out.println("7. 환불 확인");
-                    System.out.println("8. 로그아웃");
+                    String[] menuItems = {
+                            "선발 일정 및 비용 확인",
+                            "입사 신청",
+                            "합격 여부 및 호실 확인",
+                            "생활관 비용 확인 및 납부",
+                            "결핵진단서 제출",
+                            "퇴사 신청",
+                            "환불 확인",
+                            "로그아웃"
+                    };
+                    for (int i = 0; i < menuItems.length; i++) {
+                        System.out.println((i + 1) + ". " + menuItems[i]);
+                    }
                     System.out.print("원하는 작업 번호를 입력하세요: ");
+
                     try {
                         switch (sc.nextInt()) {
                             case 1 -> scheduleView.displayMenu();

@@ -86,6 +86,10 @@ public class Protocol {
         return this.code;
     }
 
+    public void setCode(byte code) {
+        this.code = code;
+    }
+
     public Protocol() {
         this(TYPE_UNDEFINED, (byte)0);
     }
@@ -135,5 +139,4 @@ public class Protocol {
     public boolean isValid() {
         return type != TYPE_UNDEFINED && length <= LEN_MAX;
     }
-
 }
