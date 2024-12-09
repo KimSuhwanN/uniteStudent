@@ -90,7 +90,7 @@ public class Protocol {
         this.type = type;
     }
 
-    public byte setCode(byte code) {
+    public void setCode(byte code) {
         this.code = code;
     }
 

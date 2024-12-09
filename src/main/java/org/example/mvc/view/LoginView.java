@@ -5,6 +5,7 @@ import org.example.mvc.packet.LoginPacket;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -20,7 +21,7 @@ public class LoginView {
         this.sc = new Scanner(System.in);
     }
 
-    public boolean printSignIn() {
+    public void printSignIn() {
         try {
             System.out.println("=== 로그인 ===");
             String id = promptInput("아이디: ");
@@ -28,20 +29,64 @@ public class LoginView {
 
             if (!verifyId(id)) {
                 System.out.println("ID 검증 실패");
-                return false;
+                return;
             }
             if (!verifyPassword(id, pwd)) {
                 System.out.println("로그인 실패");
-                return false;
+                return;
             }
-
             System.out.println("로그인 성공!");
             displayMainMenu();
-            return true;
         } catch (Exception e) {
             System.out.println("로그인 오류: " + e.getMessage());
             e.printStackTrace();
-            return false;
+        }
+    }
+
+    public void printSignUp() {
+        try {
+            System.out.println("=== 회원가입 ===");
+            String username = promptInput("아이디: ");
+            String password = promptInput("비밀번호: ");
+            String role = promptInput("역할(예: STUDENT/ADMIN): ");
+            String name = promptInput("이름: ");
+            String studentNumber = promptInput("학번: ");
+            String major = promptInput("전공: ");
+            String gpa = promptInput("GPA: ");
+            String distance = promptInput("거주 거리(km): ");
+
+            String signupData = String.join
+                    (",", username, password, role, name, studentNumber, major, gpa, distance);
+            sendRequest(Protocol.TYPE_REGISTER, Protocol.CODE_REGISTER_REQUEST, signupData);
+
+            // 서버 응답 처리
+            Protocol response = receiveResponse();
+            if (response.getCode() == Protocol.CODE_SUCCESS) {
+                System.out.println("회원가입이 성공적으로 완료되었습니다.");
+                displayMainMenu();
+            } else {
+                System.out.println("회원가입 실패: " + response.getDataAsString());
+            }
+        } catch (Exception e) {
+            System.out.println("회원가입 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void sendRequest(byte type, byte code, String data) {
+        try {
+            Protocol packet = new Protocol();
+            packet.setType(type);
+            packet.setCode(code);
+            packet.setData(data);
+            byte[] packetData = packet.getPacket();
+
+            for (byte packetDatum : packetData) {
+                out.writeByte(packetDatum);
+            }
+            out.flush();
+        } catch (IOException e) {
+            System.err.println("요청 전송 오류: " + e.getMessage());
         }
     }
 
@@ -94,13 +139,13 @@ public class LoginView {
     }
 
     private void displayMainMenu() {
-        ScheduleView scheduleView = new ScheduleView(in, out);
-        ApplicationView applicationView = new ApplicationView(in, out);
-        RoomView roomView = new RoomView(in, out);
-        PaymentView paymentView = new PaymentView(in, out);
-        DocumentView documentView = new DocumentView(in, out);
-        WithdrawalView withdrawalView = new WithdrawalView(in, out);
-        RefundView refundView = new RefundView(in, out);
+        ScheduleView schedule = new ScheduleView(in, out);
+        ApplicationView application = new ApplicationView(in, out);
+        RoomView room = new RoomView(in, out);
+        PaymentView payment = new PaymentView(in, out);
+        DocumentView document = new DocumentView(in, out);
+        WithdrawalView withdrawal = new WithdrawalView(in, out);
+        RefundView refund = new RefundView(in, out);
 
         String[] menuItems = {
                 "선발 일정 및 비용 확인",
@@ -122,13 +167,13 @@ public class LoginView {
             System.out.print("원하는 작업 번호를 입력하세요: ");
             try {
                 switch (sc.nextInt()) {
-                    case 1 -> scheduleView.displayMenu();
-                    case 2 -> applicationView.displayMenu();
-                    case 3 -> roomView.displayMenu();
-                    case 4 -> paymentView.displayMenu();
-                    case 5 -> documentView.displayMenu();
-                    case 6 -> withdrawalView.displayMenu();
-                    case 7 -> refundView.displayMenu();
+                    case 1 -> schedule.displayMenu();
+                    case 2 -> application.displayMenu();
+                    case 3 -> room.displayMenu();
+                    case 4 -> payment.displayMenu();
+                    case 5 -> document.displayMenu();
+                    case 6 -> withdrawal.displayMenu();
+                    case 7 -> refund.displayMenu();
                     case 8 -> {
                         System.out.println("로그아웃 되었습니다.");
                         return;

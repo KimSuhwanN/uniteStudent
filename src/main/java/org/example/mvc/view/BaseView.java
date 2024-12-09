@@ -1,6 +1,7 @@
 package org.example.mvc.view;
 
 import org.example.global.Protocol;
+import org.example.mvc.service.ResponseProcessor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,10 +11,12 @@ import java.nio.charset.StandardCharsets;
 public abstract class BaseView {
     protected final DataInputStream in;
     protected final DataOutputStream out;
+    private final ResponseProcessor responseProcessor;
 
     public BaseView(DataInputStream in, DataOutputStream out) {
         this.in = in;
         this.out = out;
+        this.responseProcessor = new ResponseProcessor();
     }
 
     // 요청 전송 메서드
@@ -49,16 +52,7 @@ public abstract class BaseView {
                 responseData = new String(data, StandardCharsets.UTF_8);
             }
 
-            // 응답 코드에 따른 처리
-            switch (code) {
-                case Protocol.CODE_SUCCESS -> System.out.println("요청 성공: " + responseData);
-                case Protocol.CODE_FAIL -> System.out.println("요청 실패: " + responseData);
-                case Protocol.CODE_NO_AUTH -> System.out.println("권한 없음: " + responseData);
-                case Protocol.CODE_INVALID_REQ -> System.out.println("잘못된 요청: " + responseData);
-                default -> System.out.println("알 수 없는 응답 코드: " + code);
-            }
-
-            System.out.println("전체 응답 데이터: " + responseData);
+            responseProcessor.processResponse(String.format("%02X", type), String.format("%02X", code), responseData);
         } catch (Exception e) {
             System.err.println("응답 처리 오류: " + e.getMessage());
             e.printStackTrace();

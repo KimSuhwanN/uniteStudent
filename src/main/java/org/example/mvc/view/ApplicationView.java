@@ -4,6 +4,7 @@ import org.example.global.Protocol;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -39,18 +40,57 @@ public class ApplicationView extends BaseView {
         String studentId = sc.nextLine();
         System.out.print("생활관: ");
         String dormName = sc.nextLine();
+        System.out.print("2인실/4인실 선택(숫자만 입력): ");
+        int roomType = sc.nextInt();
+        System.out.print("5일식/7일식/식사 안 함 선택(숫자만 입력): ");
+        int mealType = sc.nextInt();
         System.out.print("지망: ");
         int dormitoryPreference = sc.nextInt();
 
-        String applicationData = studentId + "," + dormName + "," + dormitoryPreference;
+        String applicationData;
+        applicationData = studentId + "," + dormName + "," + roomType + "," + mealType + "," + dormitoryPreference;
         sendRequest(Protocol.TYPE_APPLICATION, Protocol.CODE_APPLICATION_SUBMIT, applicationData);
-        receiveResponse();
+        try {
+            byte type = in.readByte();
+            byte code = in.readByte();
+            short length = in.readShort();
+            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
+
+            String responseData = "";
+            if (length > 0) {
+                byte[] data = new byte[length];
+                in.readFully(data);
+                responseData = new String(data, StandardCharsets.UTF_8);
+            }
+            System.out.println(responseData);
+
+        } catch (Exception e) {
+            System.err.println("응답 처리 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void checkApplicationStatus() {
         System.out.print("조회할 학번을 입력하세요: ");
         String studentId = sc.next();
         sendRequest(Protocol.TYPE_APPLICATION, Protocol.CODE_APPLICATION_STATUS, studentId);
-        receiveResponse();
+        try {
+            byte type = in.readByte();
+            byte code = in.readByte();
+            short length = in.readShort();
+            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
+
+            String responseData = "";
+            if (length > 0) {
+                byte[] data = new byte[length];
+                in.readFully(data);
+                responseData = new String(data, StandardCharsets.UTF_8);
+            }
+            System.out.println(responseData);
+
+        } catch (Exception e) {
+            System.err.println("응답 처리 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

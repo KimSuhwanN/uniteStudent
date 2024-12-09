@@ -4,6 +4,7 @@ import org.example.global.Protocol;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -34,11 +35,45 @@ public class ScheduleView extends BaseView {
 
     private void viewSchedule() {
         sendRequest(Protocol.TYPE_SCHEDULE, Protocol.CODE_SCHEDULE_VIEW, "");
-        receiveResponse();  // BaseView의 receiveResponse 사용
+        try {
+            byte type = in.readByte();
+            byte code = in.readByte();
+            short length = in.readShort();
+            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
+
+            String responseData = "";
+            if (length > 0) {
+                byte[] data = new byte[length];
+                in.readFully(data);
+                responseData = new String(data, StandardCharsets.UTF_8);
+            }
+            System.out.println(responseData);
+
+        } catch (Exception e) {
+            System.err.println("응답 처리 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void viewFee() {
         sendRequest(Protocol.TYPE_SCHEDULE, Protocol.CODE_SCHEDULE_FEE_VIEW, "");
-        receiveResponse();
+        try {
+            byte type = in.readByte();
+            byte code = in.readByte();
+            short length = in.readShort();
+            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
+
+            String responseData = "";
+            if (length > 0) {
+                byte[] data = new byte[length];
+                in.readFully(data);
+                responseData = new String(data, StandardCharsets.UTF_8);
+            }
+            System.out.println(responseData);
+
+        } catch (Exception e) {
+            System.err.println("응답 처리 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
