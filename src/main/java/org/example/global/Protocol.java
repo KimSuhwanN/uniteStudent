@@ -86,7 +86,11 @@ public class Protocol {
         return this.code;
     }
 
-    public void setCode(byte code) {
+    public void setType(byte type) {
+        this.type = type;
+    }
+
+    public byte setCode(byte code) {
         this.code = code;
     }
 

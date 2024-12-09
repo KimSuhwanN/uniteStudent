@@ -18,7 +18,7 @@ public class RefundView extends BaseView {
         System.out.println("=== 환불 확인 ===");
         System.out.print("학번을 입력하세요: ");
         String studentId = sc.next();
-        sendRequest(Protocol.CODE_WITHDRAWAL_STATUS, studentId);
+        sendRequest(Protocol.TYPE_WITHDRAWAL, Protocol.CODE_WITHDRAWAL_STATUS, studentId);
         receiveResponse();
     }
 }

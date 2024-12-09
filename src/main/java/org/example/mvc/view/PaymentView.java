@@ -32,14 +32,14 @@ public class PaymentView extends BaseView {
     }
 
     private void checkPaymentAmount() {
-        sendRequest(Protocol.CODE_PAYMENT_AMOUNT, "");
+        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_AMOUNT, "");
         receiveResponse();
     }
 
     private void makePayment() {
         System.out.print("납부할 금액을 입력하세요: ");
         String amount = sc.next();
-        sendRequest(Protocol.CODE_PAYMENT_PAY, amount);
+        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_PAY, amount);
         receiveResponse();
     }
 }

@@ -36,7 +36,7 @@ public class DocumentView extends BaseView {
             byte[] fileContent = Files.readAllBytes(Path.of(filePath));
             String encodedFile = Base64.getEncoder().encodeToString(fileContent);
 
-            sendRequest(Protocol.CODE_DOCUMENT_SUBMIT, encodedFile);
+            sendRequest(Protocol.TYPE_DOCUMENT, Protocol.CODE_DOCUMENT_SUBMIT, encodedFile);
             receiveResponse();
         } catch (IOException e) {
             System.err.println("파일 읽기 오류: " + e.getMessage());

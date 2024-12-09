@@ -33,12 +33,12 @@ public class ScheduleView extends BaseView {
     }
 
     private void viewSchedule() {
-        sendRequest(Protocol.CODE_SCHEDULE_VIEW, "");
+        sendRequest(Protocol.TYPE_SCHEDULE, Protocol.CODE_SCHEDULE_VIEW, "");
         receiveResponse();  // BaseView의 receiveResponse 사용
     }
 
     private void viewFee() {
-        sendRequest(Protocol.CODE_SCHEDULE_FEE_VIEW, "");
+        sendRequest(Protocol.TYPE_SCHEDULE, Protocol.CODE_SCHEDULE_FEE_VIEW, "");
         receiveResponse();
     }
 }

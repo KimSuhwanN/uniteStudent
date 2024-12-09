@@ -34,14 +34,14 @@ public class RoomView extends BaseView {
     private void checkPassStatus() {
         System.out.print("학번을 입력하세요: ");
         String studentId = sc.next();
-        sendRequest(Protocol.CODE_ROOM_PASS_CHECK, studentId);
+        sendRequest(Protocol.TYPE_ROOM, Protocol.CODE_ROOM_PASS_CHECK, studentId);
         receiveResponse();
     }
 
     private void checkRoomInfo() {
         System.out.print("학번을 입력하세요: ");
         String studentId = sc.next();
-        sendRequest(Protocol.CODE_ROOM_INFO, studentId);
+        sendRequest(Protocol.TYPE_ROOM, Protocol.CODE_ROOM_INFO, studentId);
         receiveResponse();
     }
 }

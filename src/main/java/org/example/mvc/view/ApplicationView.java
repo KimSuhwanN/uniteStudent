@@ -35,22 +35,22 @@ public class ApplicationView extends BaseView {
     private void submitApplication() {
         System.out.println("신청서 정보를 입력하세요:");
         sc.nextLine();
-        System.out.print("이름: ");
-        String name = sc.nextLine();
         System.out.print("학번: ");
         String studentId = sc.nextLine();
-        System.out.print("연락처: ");
-        String contact = sc.nextLine();
+        System.out.print("생활관: ");
+        String dormName = sc.nextLine();
+        System.out.print("지망: ");
+        int dormitoryPreference = sc.nextInt();
 
-        String applicationData = name + "," + studentId + "," + contact;
-        sendRequest(Protocol.CODE_APPLICATION_SUBMIT, applicationData);
+        String applicationData = studentId + "," + dormName + "," + dormitoryPreference;
+        sendRequest(Protocol.TYPE_APPLICATION, Protocol.CODE_APPLICATION_SUBMIT, applicationData);
         receiveResponse();
     }
 
     private void checkApplicationStatus() {
         System.out.print("조회할 학번을 입력하세요: ");
         String studentId = sc.next();
-        sendRequest(Protocol.CODE_APPLICATION_STATUS, studentId);
+        sendRequest(Protocol.TYPE_APPLICATION, Protocol.CODE_APPLICATION_STATUS, studentId);
         receiveResponse();
     }
 }

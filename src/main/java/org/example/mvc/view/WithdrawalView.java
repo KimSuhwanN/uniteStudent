@@ -18,7 +18,7 @@ public class WithdrawalView extends BaseView {
         System.out.println("=== 퇴사 신청 ===");
         System.out.print("학번을 입력하세요: ");
         String studentId = sc.next();
-        sendRequest(Protocol.CODE_WITHDRAWAL_REQ, studentId);
+        sendRequest(Protocol.TYPE_WITHDRAWAL, Protocol.CODE_WITHDRAWAL_REQ, studentId);
         receiveResponse();
     }
 }
