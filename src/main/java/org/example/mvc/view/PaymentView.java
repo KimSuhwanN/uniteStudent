@@ -55,9 +55,16 @@ public class PaymentView extends BaseView {
     }
 
     private void makePayment() {
-        System.out.print("납부할 금액을 입력하세요: ");
-        String amount = sc.next();
-        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_PAY, amount);
+        System.out.print("생활관비를 납부하시겠습니까? (y/n): ");
+        String input = sc.next().trim().toLowerCase();
+
+        if (!"y".equals(input) && !"n".equals(input)) {
+            makePayment();
+            return;
+        }
+
+        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_PAY, "y".equals(input) ? "true" : "false");
+
         try {
             byte type = in.readByte();
             byte code = in.readByte();
@@ -71,7 +78,6 @@ public class PaymentView extends BaseView {
                 responseData = new String(data, StandardCharsets.UTF_8);
             }
             System.out.println(responseData);
-
         } catch (Exception e) {
             System.err.println("응답 처리 오류: " + e.getMessage());
             e.printStackTrace();
