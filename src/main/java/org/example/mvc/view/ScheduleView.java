@@ -23,7 +23,9 @@ public class ScheduleView extends BaseView {
         System.out.println("2. 비용 조회");
         System.out.print("원하는 작업 번호를 입력하세요: ");
         try {
-            switch (sc.nextInt()) {
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
                 case 1 -> viewSchedule();
                 case 2 -> viewFee();
                 default -> System.out.println("잘못된 입력입니다.");
@@ -93,19 +95,27 @@ public class ScheduleView extends BaseView {
         DecimalFormat formatter = new DecimalFormat("#,###");
         String[] lines = responseData.split("\\n");
 
-        System.out.println("------------------------------------");
-        System.out.printf("%-10s %-8s %-10s\n", "생활관", "유형", "비용");
-        System.out.println("------------------------------------");
+        String headerFormat = "%-10s %-10s %-10s\n";
+        String rowFormat = "%-10s %-10s %-10s\n";
 
+        // 상단 출력
+        System.out.println("-----------------------------------");
+        System.out.printf(headerFormat, "생활관", "유형", "비용");
+        System.out.println("-----------------------------------");
+
+        // 데이터 출력
         for (String line : lines) {
             String[] parts = line.split(",");
             if (parts.length == 3) {
-                String facility = parts[0];
-                String type = translateType(parts[1]);
-                String cost = formatter.format(Integer.parseInt(parts[2])) + "원";
-                System.out.printf("%-10s %-8s %-10s\n", facility, type, cost);
+                System.out.printf(
+                        rowFormat,
+                        parts[0],
+                        translateType(parts[1]),
+                        formatter.format(Integer.parseInt(parts[2])) + "원"
+                );
             }
         }
+        System.out.println("-----------------------------------");
     }
 
     private String translateType(String type) {
@@ -114,7 +124,7 @@ public class ScheduleView extends BaseView {
             case "ROOM_4" -> "4인실";
             case "MEAL_5" -> "5일식";
             case "MEAL_7" -> "7일식";
-            case "MEAL_0" -> "식사 안 함";
+            case "MEAL_0" -> "식사X";
             default -> type;
         };
     }

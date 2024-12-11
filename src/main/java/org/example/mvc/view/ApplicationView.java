@@ -22,7 +22,9 @@ public class ApplicationView extends BaseView {
         System.out.println("2. 신청 상태 조회");
         System.out.print("원하는 작업 번호를 입력하세요: ");
         try {
-            switch (sc.nextInt()) {
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
                 case 1 -> submitApplication();
                 case 2 -> checkApplicationStatus();
                 default -> System.out.println("1 또는 2를 입력해주세요.");
@@ -38,13 +40,13 @@ public class ApplicationView extends BaseView {
         sc.nextLine();
         System.out.print("학번: ");
         String studentId = sc.nextLine();
-        System.out.print("생활관: ");
+        System.out.print("생활관 선택(푸름관1동/푸름관2동/오름관1동/오름관2동): ");
         String dormName = sc.nextLine();
         System.out.print("2인실/4인실 선택(숫자만 입력): ");
         int roomType = sc.nextInt();
         System.out.print("5일식/7일식/식사 안 함 선택(숫자만 입력): ");
         int mealType = sc.nextInt();
-        System.out.print("지망: ");
+        System.out.print("지망(1 또는 2): ");
         int dormitoryPreference = sc.nextInt();
 
         String applicationData;

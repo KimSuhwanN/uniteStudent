@@ -21,7 +21,9 @@ public class PaymentView extends BaseView {
         System.out.println("2. 비용 납부");
         System.out.print("원하는 작업 번호를 입력하세요: ");
         try {
-            switch (sc.nextInt()) {
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
                 case 1 -> checkPaymentAmount();
                 case 2 -> makePayment();
                 default -> System.out.println("1 또는 2를 입력해주세요.");
@@ -33,7 +35,9 @@ public class PaymentView extends BaseView {
     }
 
     private void checkPaymentAmount() {
-        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_AMOUNT, "");
+        System.out.print("학번을 입력하세요: ");
+        String studentId = sc.nextLine();
+        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_AMOUNT, studentId);
         try {
             byte type = in.readByte();
             byte code = in.readByte();
@@ -55,15 +59,20 @@ public class PaymentView extends BaseView {
     }
 
     private void makePayment() {
+        System.out.print("학번을 입력하세요: ");
+        String studentId = sc.nextLine();
         System.out.print("생활관비를 납부하시겠습니까? (y/n): ");
         String input = sc.next().trim().toLowerCase();
 
         if (!"y".equals(input) && !"n".equals(input)) {
+            System.out.println("y 또는 n을 입력하세요.");
             makePayment();
             return;
         }
 
-        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_PAY, "y".equals(input) ? "true" : "false");
+        String paid = "y".equals(input) ? "납부" : "미납";
+        String paymentData = studentId + "," + paid;
+        sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_PAY, paymentData);
 
         try {
             byte type = in.readByte();

@@ -21,7 +21,9 @@ public class RoomView extends BaseView {
         System.out.println("2. 생활관 호실 조회");
         System.out.print("원하는 작업 번호를 입력하세요: ");
         try {
-            switch (sc.nextInt()) {
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
                 case 1 -> checkPassStatus();
                 case 2 -> checkRoomInfo();
                 default -> System.out.println("1 또는 2를 입력해주세요.");

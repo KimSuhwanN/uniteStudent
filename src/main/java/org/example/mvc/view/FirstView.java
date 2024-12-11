@@ -18,11 +18,13 @@ public class FirstView {
         System.out.printf("%-10s %-10s %-10s\n", "1. 로그인", "2. 회원가입", "3. 나가기");
 
         try {
-            switch (sc.nextInt()) {
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
                 case 1 -> loginView.printSignIn();
                 case 2 -> loginView.printSignUp();
                 case 3 -> {
-                    System.out.println("아직 끝나지 않은 이야기. 잠시 멈춘 우리의 숨결.");
+                    System.out.println("아직 끝나지 않은 이야기. 잠시 멈춘 우리의 영혼.");
                 }
                 default -> {
                     System.out.println("1에서 3 사이의 번호를 입력해주세요.");

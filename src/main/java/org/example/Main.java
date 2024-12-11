@@ -21,7 +21,7 @@ public class Main {
             DataInputStream in = new DataInputStream(bis);
 
             // LoginView 생성 및 의존성 주입
-            LoginView loginView = new LoginView(clientSocket, in, out);
+            LoginView loginView = new LoginView(in, out);
 
             // FirstView에 LoginView 전달
             FirstView firstView = new FirstView(loginView);

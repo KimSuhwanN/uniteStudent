@@ -6,7 +6,6 @@ import org.example.mvc.packet.LoginPacket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,7 +14,7 @@ public class LoginView {
     private final DataOutputStream out;
     private final Scanner sc;
 
-    public LoginView(Socket socket, DataInputStream in, DataOutputStream out) {
+    public LoginView(DataInputStream in, DataOutputStream out) {
         this.in = in;
         this.out = out;
         this.sc = new Scanner(System.in);
@@ -28,14 +27,14 @@ public class LoginView {
             String pwd = promptInput("비밀번호: ");
 
             if (!verifyId(id)) {
-                System.out.println("ID 검증 실패");
+                System.out.println("ID 검증 실패. 프로그램을 종료합니다.");
                 return;
             }
             if (!verifyPassword(id, pwd)) {
-                System.out.println("로그인 실패");
+                System.out.println("로그인 실패. 프로그램을 종료합니다.");
                 return;
             }
-            System.out.println("로그인 성공!");
+            System.out.println("로그인 성공");
             displayMainMenu();
         } catch (Exception e) {
             System.out.println("로그인 오류: " + e.getMessage());
@@ -166,7 +165,9 @@ public class LoginView {
 
             System.out.print("원하는 작업 번호를 입력하세요: ");
             try {
-                switch (sc.nextInt()) {
+                int choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
                     case 1 -> schedule.displayMenu();
                     case 2 -> application.displayMenu();
                     case 3 -> room.displayMenu();
