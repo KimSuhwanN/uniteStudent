@@ -36,8 +36,6 @@ public class ApplicationView extends BaseView {
     }
 
     private void submitApplication() {
-        System.out.println("신청서 정보를 입력하세요:");
-        sc.nextLine();
         System.out.print("학번: ");
         String studentId = sc.nextLine();
         System.out.print("생활관 선택(푸름관1동/푸름관2동/오름관1동/오름관2동): ");
@@ -52,47 +50,13 @@ public class ApplicationView extends BaseView {
         String applicationData;
         applicationData = studentId + "," + dormName + "," + roomType + "," + mealType + "," + dormitoryPreference;
         sendRequest(Protocol.TYPE_APPLICATION, Protocol.CODE_APPLICATION_SUBMIT, applicationData);
-        try {
-            byte type = in.readByte();
-            byte code = in.readByte();
-            short length = in.readShort();
-            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
-
-            String responseData = "";
-            if (length > 0) {
-                byte[] data = new byte[length];
-                in.readFully(data);
-                responseData = new String(data, StandardCharsets.UTF_8);
-            }
-            System.out.println(responseData);
-
-        } catch (Exception e) {
-            System.err.println("응답 처리 오류: " + e.getMessage());
-            e.printStackTrace();
-        }
+        getResponse();
     }
 
     private void checkApplicationStatus() {
         System.out.print("조회할 학번을 입력하세요: ");
         String studentId = sc.next();
         sendRequest(Protocol.TYPE_APPLICATION, Protocol.CODE_APPLICATION_STATUS, studentId);
-        try {
-            byte type = in.readByte();
-            byte code = in.readByte();
-            short length = in.readShort();
-            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
-
-            String responseData = "";
-            if (length > 0) {
-                byte[] data = new byte[length];
-                in.readFully(data);
-                responseData = new String(data, StandardCharsets.UTF_8);
-            }
-            System.out.println(responseData);
-
-        } catch (Exception e) {
-            System.err.println("응답 처리 오류: " + e.getMessage());
-            e.printStackTrace();
-        }
+        getResponse();
     }
 }

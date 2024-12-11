@@ -73,22 +73,6 @@ public class PaymentView extends BaseView {
         String paymentData = studentId + "," + paid;
         sendRequest(Protocol.TYPE_PAYMENT, Protocol.CODE_PAYMENT_PAY, paymentData);
 
-        try {
-            byte type = in.readByte();
-            byte code = in.readByte();
-            short length = in.readShort();
-            System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
-
-            String responseData = "";
-            if (length > 0) {
-                byte[] data = new byte[length];
-                in.readFully(data);
-                responseData = new String(data, StandardCharsets.UTF_8);
-            }
-            System.out.println(responseData);
-        } catch (Exception e) {
-            System.err.println("응답 처리 오류: " + e.getMessage());
-            e.printStackTrace();
-        }
+        getResponse();
     }
 }

@@ -32,7 +32,7 @@ public class WithdrawalView extends BaseView {
         String requestData = String.join(",", studentId, leaveDate, bankName, accountNumber);
         sendRequest(Protocol.TYPE_WITHDRAWAL, Protocol.CODE_WITHDRAWAL_REQ, requestData);
 
-        processResponse();
+        getResponse();
     }
 
     private String promptValidDate() {

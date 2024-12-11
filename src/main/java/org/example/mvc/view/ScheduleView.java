@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -78,12 +79,10 @@ public class ScheduleView extends BaseView {
         System.out.println(lin);
 
         // 데이터 출력
-        for (String line : lines) {
-            String[] parts = line.split(",");
-            if (parts.length == 3) {
-                System.out.printf(rowFormat, parts[0], parts[1], parts[2]);
-            }
-        }
+        Arrays.stream(lines)
+                .map(line -> line.split(","))
+                .filter(parts -> parts.length == 3)
+                .forEach(parts -> System.out.printf(rowFormat, parts[0], parts[1], parts[2]));
         System.out.println(lin);
     }
 
@@ -133,17 +132,15 @@ public class ScheduleView extends BaseView {
         System.out.println("-----------------------------------");
 
         // 데이터 출력
-        for (String line : lines) {
-            String[] parts = line.split(",");
-            if (parts.length == 3) {
-                System.out.printf(
+        Arrays.stream(lines)
+                .map(line -> line.split(","))
+                .filter(parts -> parts.length == 3)
+                .forEach(parts -> System.out.printf(
                         rowFormat,
                         parts[0],
                         translateType(parts[1]),
                         formatter.format(Integer.parseInt(parts[2])) + "원"
-                );
-            }
-        }
+                ));
         System.out.println("-----------------------------------");
     }
 

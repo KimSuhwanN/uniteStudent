@@ -3,6 +3,7 @@ package org.example.global;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -46,6 +47,7 @@ public class Protocol {
     // Document Codes (0x06)
     public static final byte CODE_DOCUMENT_SUBMIT = 0x01;   // 결핵진단서 제출
     public static final byte CODE_DOCUMENT_STATUS = 0x02;   // 제출현황 조회
+    public static final byte CODE_DOCUMENT_FILE = 0x03;
 
     // Withdrawal Codes (0x07)
     public static final byte CODE_WITHDRAWAL_REQ = 0x01;    // 퇴사 신청
@@ -139,5 +141,9 @@ public class Protocol {
     // 타입과 코드가 유효한지 검사
     public boolean isValid() {
         return type != TYPE_UNDEFINED && length <= LEN_MAX;
+    }
+
+    public byte[] getData() {
+        return data;
     }
 }

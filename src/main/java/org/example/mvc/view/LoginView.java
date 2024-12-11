@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class LoginView {
     private final DataInputStream in;
@@ -159,9 +160,9 @@ public class LoginView {
 
         while (true) {
             System.out.println("\n=== 메인 메뉴 ===");
-            for (int i = 0; i < menuItems.length; i++) {
-                System.out.println((i + 1) + ". " + menuItems[i]);
-            }
+            IntStream.range(0, menuItems.length)
+                    .mapToObj(i -> (i + 1) + ". " + menuItems[i])
+                    .forEach(System.out::println);
 
             System.out.print("원하는 작업 번호를 입력하세요: ");
             try {
