@@ -24,7 +24,7 @@ public class FirstView {
                 case 1 -> loginView.printSignIn();
                 case 2 -> loginView.printSignUp();
                 case 3 -> {
-                    System.out.println("아직 끝나지 않은 이야기. 잠시 멈춘 우리의 영혼.");
+                    System.out.println("우리는 이별을 통해 사랑의 깊이를 깨닫고, 그리움을 통해 사랑의 소중함을 배운다.");
                 }
                 default -> {
                     System.out.println("1에서 3 사이의 번호를 입력해주세요.");

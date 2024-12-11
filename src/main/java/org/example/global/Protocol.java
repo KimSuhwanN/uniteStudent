@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 
 @Getter
 public class Protocol {
-
     // Message Type
     public static final byte TYPE_UNDEFINED = -1;    // 초기값
     public static final byte TYPE_AUTH = 0x01;       // 인증 관련
@@ -70,9 +69,7 @@ public class Protocol {
     // 회원가입 관련
     public static final byte CODE_REGISTER_REQUEST = 0x01;  // 회원가입 요청
 
-    @Setter
     protected byte type;
-    @Setter
     protected byte code;
     @Setter
     protected short length;

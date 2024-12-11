@@ -31,12 +31,31 @@ public class RefundView extends BaseView {
                 byte[] data = new byte[length];
                 in.readFully(data);
                 responseData = new String(data, StandardCharsets.UTF_8);
+                processRefundData(responseData);
             }
-            System.out.println(responseData);
-
         } catch (Exception e) {
             System.err.println("응답 처리 오류: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void processRefundData(String responseData) {
+        String[] parts = responseData.split(",");
+        String lin = "---------------------------------------------------------------------------------";
+
+        if (parts.length == 5) {
+            String status = parts[0];
+            String fee = parts[1];
+            String terminationDate = parts[2];
+            String bankName = parts[3];
+            String accountNumber = parts[4];
+
+            System.out.println(lin);
+            System.out.printf("%-10s %-13s %-18s %-10s %-22s\n", "상태", "생활관비", "퇴사일", "은행명", "계좌번호");
+            System.out.println(lin);
+            System.out.printf("%-10s %-15s %-20s %-10s %-20s\n",
+                    status, fee + "원", terminationDate, bankName, accountNumber);
+            System.out.println(lin);
         }
     }
 }

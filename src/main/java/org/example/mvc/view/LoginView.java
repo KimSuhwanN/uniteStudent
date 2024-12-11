@@ -138,12 +138,12 @@ public class LoginView {
     }
 
     private void displayMainMenu() {
-        ScheduleView schedule = new ScheduleView(in, out);
-        ApplicationView application = new ApplicationView(in, out);
+        ScheduleView schd = new ScheduleView(in, out);
+        ApplicationView app = new ApplicationView(in, out);
         RoomView room = new RoomView(in, out);
-        PaymentView payment = new PaymentView(in, out);
-        DocumentView document = new DocumentView(in, out);
-        WithdrawalView withdrawal = new WithdrawalView(in, out);
+        PaymentView pay = new PaymentView(in, out);
+        DocumentView dcmn = new DocumentView(in, out);
+        WithdrawalView wthd = new WithdrawalView(in, out);
         RefundView refund = new RefundView(in, out);
 
         String[] menuItems = {
@@ -168,12 +168,12 @@ public class LoginView {
                 int choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
-                    case 1 -> schedule.displayMenu();
-                    case 2 -> application.displayMenu();
+                    case 1 -> schd.displayMenu();
+                    case 2 -> app.displayMenu();
                     case 3 -> room.displayMenu();
-                    case 4 -> payment.displayMenu();
-                    case 5 -> document.displayMenu();
-                    case 6 -> withdrawal.displayMenu();
+                    case 4 -> pay.displayMenu();
+                    case 5 -> dcmn.displayMenu();
+                    case 6 -> wthd.displayMenu();
                     case 7 -> refund.displayMenu();
                     case 8 -> {
                         System.out.println("로그아웃 되었습니다.");

@@ -49,9 +49,8 @@ public class PaymentView extends BaseView {
                 byte[] data = new byte[length];
                 in.readFully(data);
                 responseData = new String(data, StandardCharsets.UTF_8);
+                System.out.println("납부 금액: " + responseData + "원");
             }
-            System.out.println(responseData);
-
         } catch (Exception e) {
             System.err.println("응답 처리 오류: " + e.getMessage());
             e.printStackTrace();

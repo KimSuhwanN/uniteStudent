@@ -1,7 +1,6 @@
 package org.example.mvc.view;
 
 import org.example.global.Protocol;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -30,10 +29,11 @@ public class DocumentView extends BaseView {
         System.out.print("결핵진단서 파일 경로를 입력하세요: ");
         String filePath = sc.nextLine();
 
-        if (!filePath.toLowerCase().endsWith(".jpg") && !filePath.toLowerCase().endsWith(".png")) {
-            System.out.println("jpg 또는 png 파일만 제출 가능합니다.");
-            return;
-        }
+            // 파일 확장자 검증
+            if (!filePath.toLowerCase().endsWith(".jpg") && !filePath.toLowerCase().endsWith(".png")) {
+                System.out.println("jpg 또는 png 파일만 제출 가능합니다.");
+                return;
+            }
 
         try {
             byte[] fileContent = Files.readAllBytes(Path.of(filePath));

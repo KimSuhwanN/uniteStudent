@@ -44,7 +44,7 @@ public class ApplicationView extends BaseView {
         String dormName = sc.nextLine();
         System.out.print("2인실/4인실 선택(숫자만 입력): ");
         int roomType = sc.nextInt();
-        System.out.print("5일식/7일식/식사 안 함 선택(숫자만 입력): ");
+        System.out.print("5일식/7일식/0일식(식사X) 선택(숫자만 입력): ");
         int mealType = sc.nextInt();
         System.out.print("지망(1 또는 2): ");
         int dormitoryPreference = sc.nextInt();

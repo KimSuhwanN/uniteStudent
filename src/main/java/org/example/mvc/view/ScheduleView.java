@@ -50,12 +50,41 @@ public class ScheduleView extends BaseView {
                 in.readFully(data);
                 responseData = new String(data, StandardCharsets.UTF_8);
             }
-            System.out.println(responseData);
 
+            // 응답 코드에 따른 처리
+            switch (String.format("%02X", code)) {
+                case "01" -> processScheduleData(responseData);
+                case "02" -> System.out.println("요청 실패: " + responseData);
+                case "03" -> System.out.println("권한 없음: " + responseData);
+                case "04" -> System.out.println("잘못된 요청: " + responseData);
+                default -> System.out.println("알 수 없는 응답 코드: " + String.format("%02X", code));
+            }
         } catch (Exception e) {
             System.err.println("응답 처리 오류: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void processScheduleData(String responseData) {
+        String[] lines = responseData.split("\\n");
+
+        String lin = "--------------------------------------------------------------------";
+        String headerFormat = "%-20s %-20s %-20s\n";
+        String rowFormat = "%-20s %-20s %-20s\n";
+
+        // 상단 출력
+        System.out.println(lin);
+        System.out.printf(headerFormat, "일정", "시작일", "종료일");
+        System.out.println(lin);
+
+        // 데이터 출력
+        for (String line : lines) {
+            String[] parts = line.split(",");
+            if (parts.length == 3) {
+                System.out.printf(rowFormat, parts[0], parts[1], parts[2]);
+            }
+        }
+        System.out.println(lin);
     }
 
     private void viewFee() {
