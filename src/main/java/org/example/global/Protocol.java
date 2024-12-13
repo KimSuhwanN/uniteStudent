@@ -3,7 +3,6 @@ package org.example.global;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;

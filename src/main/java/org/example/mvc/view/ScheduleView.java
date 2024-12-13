@@ -10,6 +10,11 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * 생활관 선발 일정과 관련 비용을 조회하는 뷰 클래스.
+ * BaseView를 상속받아 프로토콜 기반의 일정 및 비용 조회 기능을 구현함.
+ */
+
 public class ScheduleView extends BaseView {
     private final Scanner sc;
 
@@ -25,31 +30,40 @@ public class ScheduleView extends BaseView {
         System.out.print("원하는 작업 번호를 입력하세요: ");
         try {
             int choice = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // 버퍼 비우기
             switch (choice) {
-                case 1 -> viewSchedule();
-                case 2 -> viewFee();
+                case 1 -> viewSchedule(); // 1. 선발 일정 조회
+                case 2 -> viewFee(); // 2. 비용 조회
                 default -> System.out.println("잘못된 입력입니다.");
             }
         } catch (InputMismatchException e) {
             System.out.println("정수를 입력해주세요.");
-            sc.nextLine();
+            sc.nextLine(); // 오류 발생 시 버퍼 비우기
         }
     }
 
+    // 1. 선발 일정 조회
     private void viewSchedule() {
+        // 서버에 요청 데이터 전송
         sendRequest(Protocol.TYPE_SCHEDULE, Protocol.CODE_SCHEDULE_VIEW, "");
+        // 데이터 수신 처리
         try {
-            byte type = in.readByte();
-            byte code = in.readByte();
-            short length = in.readShort();
+            // 응답 패킷의 기본 필드 읽기
+            byte type = in.readByte(); // 응답 타입
+            byte code = in.readByte(); // 응답 코드
+            short length = in.readShort(); // 데이터 길이
+
+            // 디버그용 출력 (응답 필드 확인)
             System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
 
+            // 응답 데이터를 저장할 문자열 초기화
             String responseData = "";
+
+            // 데이터 길이가 0보다 크면 데이터 읽기
             if (length > 0) {
-                byte[] data = new byte[length];
-                in.readFully(data);
-                responseData = new String(data, StandardCharsets.UTF_8);
+                byte[] data = new byte[length]; // 데이터 저장용 바이트 배열
+                in.readFully(data); // 데이터를 배열에 저장
+                responseData = new String(data, StandardCharsets.UTF_8); // UTF-8로 변환
             }
 
             // 응답 코드에 따른 처리
@@ -66,10 +80,12 @@ public class ScheduleView extends BaseView {
         }
     }
 
+    // 수신된 일정 데이터를 테이블 형식으로 출력
     private void processScheduleData(String responseData) {
         String[] lines = responseData.split("\\n");
 
         String lin = "--------------------------------------------------------------------";
+        // 테이블 형식 출력을 위한 포맷 문자열
         String headerFormat = "%-20s %-20s %-20s\n";
         String rowFormat = "%-20s %-20s %-20s\n";
 
@@ -86,19 +102,28 @@ public class ScheduleView extends BaseView {
         System.out.println(lin);
     }
 
+    // 2. 비용 조회
     private void viewFee() {
+        // 서버에 요청 데이터 전송
         sendRequest(Protocol.TYPE_SCHEDULE, Protocol.CODE_SCHEDULE_FEE_VIEW, "");
+        // 데이터 수신 처리
         try {
-            byte type = in.readByte();
-            byte code = in.readByte();
-            short length = in.readShort();
+            // 응답 패킷의 기본 필드 읽기
+            byte type = in.readByte(); // 응답 타입
+            byte code = in.readByte(); // 응답 코드
+            short length = in.readShort(); // 데이터 길이
+
+            // 디버그용 출력 (응답 필드 확인)
             System.out.printf("응답 타입: %02X, 코드: %02X, 길이: %d%n", type, code, length);
 
+            // 응답 데이터를 저장할 문자열 초기화
             String responseData = "";
+
+            // 데이터 길이가 0보다 크면 데이터 읽기
             if (length > 0) {
-                byte[] data = new byte[length];
-                in.readFully(data);
-                responseData = new String(data, StandardCharsets.UTF_8);
+                byte[] data = new byte[length]; // 데이터 저장용 바이트 배열
+                in.readFully(data); // 데이터를 배열에 저장
+                responseData = new String(data, StandardCharsets.UTF_8); // UTF-8로 변환
             }
 
             // 응답 코드에 따른 처리
@@ -119,10 +144,13 @@ public class ScheduleView extends BaseView {
         }
     }
 
+    // 수신된 비용 데이터를 테이블 형식으로 출력
     private void processCostData(String responseData) {
+        // 천 단위 구분을 위한 포맷터 설정
         DecimalFormat formatter = new DecimalFormat("#,###");
         String[] lines = responseData.split("\\n");
 
+        // 테이블 형식 출력을 위한 포맷 문자열
         String headerFormat = "%-10s %-10s %-10s\n";
         String rowFormat = "%-10s %-10s %-10s\n";
 
@@ -144,6 +172,7 @@ public class ScheduleView extends BaseView {
         System.out.println("-----------------------------------");
     }
 
+    // 룸타입과 식사 유형 코드를 한글로 변환
     private String translateType(String type) {
         return switch (type) {
             case "ROOM_2" -> "2인실";
